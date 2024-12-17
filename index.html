@@ -1,13 +1,177 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Campaign Manager</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="app" class="flex h-screen bg-gray-50">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white border-r border-gray-200 p-4">
+            <div class="mb-8">
+                <h1 class="text-xl font-bold text-gray-800">Campaign Manager</h1>
+            </div>
+            <nav>
+                <button onclick="setActiveTab('dashboard')" class="w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg transition-colors bg-blue-50 text-blue-600">
+                    <i data-lucide="layout"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="setActiveTab('planner')" class="w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50">
+                    <i data-lucide="calendar"></i>
+                    <span>Campaign Planner</span>
+                </button>
+                <button onclick="setActiveTab('generator')" class="w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50">
+                    <i data-lucide="message-square"></i>
+                    <span>Post Generator</span>
+                </button>
+                <button onclick="setActiveTab('analytics')" class="w-full flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg transition-colors text-gray-600 hover:bg-gray-50">
+                    <i data-lucide="bar-chart-3"></i>
+                    <span>Analytics</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Dashboard -->
+            <div id="dashboard" class="p-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Dashboard Overview</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <i data-lucide="calendar" class="text-blue-600"></i>
+                            <span class="text-green-500 text-sm font-medium">+2</span>
+                        </div>
+                        <h3 class="text-gray-500 text-sm mb-1">Active Campaigns</h3>
+                        <p class="text-2xl font-bold text-gray-800">12</p>
+                    </div>
+                    <!-- More stats... -->
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Campaigns</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 border rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-800">Summer Sale 2024</h4>
+                                    <span class="text-sm text-green-500">Active</span>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500">Engagement</p>
+                                    <p class="font-medium">8.2%</p>
+                                </div>
+                            </div>
+                            <!-- More campaigns... -->
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Upcoming Posts</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 border rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-800">New Summer Collection Teaser</h4>
+                                    <span class="text-sm text-gray-500">Instagram</span>
+                                </div>
+                                <span class="text-sm text-blue-600">in 2h</span>
+                            </div>
+                            <!-- More posts... -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign Planner -->
+            <div id="planner" class="p-8 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Campaign Planner</h2>
+                    <button class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        <i data-lucide="plus" class="mr-2"></i>
+                        New Campaign
+                    </button>
+                </div>
+                <!-- Campaign list... -->
+            </div>
+
+            <!-- Post Generator -->
+            <div id="generator" class="p-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">AI Post Generator</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Generate Content</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Prompt</label>
+                                <textarea id="prompt" class="w-full h-32 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Describe what kind of content you want to generate..."></textarea>
+                            </div>
+                            <button onclick="generateContent()" class="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                <i data-lucide="send" class="mr-2"></i>
+                                Generate Content
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Generated Content</h3>
+                        <div id="generated-content" class="border rounded-lg p-4 min-h-[200px]">
+                            Generated content will appear here...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics -->
+            <div id="analytics" class="p-8 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Analytics Overview</h2>
+                <!-- Analytics content... -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Tab switching logic
+        function setActiveTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('main > div').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Update button styles
+            document.querySelectorAll('nav button').forEach(button => {
+                button.classList.remove('bg-blue-50', 'text-blue-600');
+                button.classList.add('text-gray-600', 'hover:bg-gray-50');
+            });
+            
+            // Highlight active button
+            const activeButton = Array.from(document.querySelectorAll('nav button'))
+                .find(button => button.onclick.toString().includes(tabId));
+            if (activeButton) {
+                activeButton.classList.remove('text-gray-600', 'hover:bg-gray-50');
+                activeButton.classList.add('bg-blue-50', 'text-blue-600');
+            }
+        }
+
+        // Content generation logic
+        function generateContent() {
+            const prompt = document.getElementById('prompt').value;
+            const generatedContent = document.getElementById('generated-content');
+            
+            // Simulate AI generation
+            generatedContent.textContent = `Sample generated content based on: "${prompt}"`;
+        }
+
+        // Initialize dashboard as active tab
+        setActiveTab('dashboard');
+    </script>
+</body>
 </html>
